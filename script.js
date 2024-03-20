@@ -1,5 +1,5 @@
 function draw() {
-  const box1 = document.getElementById("box1");
+  const box1 = document.getElementById("box1")
   const box2 = document.getElementById("box2")
   const box3 = document.getElementById("box3")
   const box4 = document.getElementById("box4")
@@ -7,6 +7,9 @@ function draw() {
   const box6 = document.getElementById("box6")
   const box7 = document.getElementById("box7")
   const box8 = document.getElementById("box8")
+  const box9 = document.getElementById("box9")
+  const box10 = document.getElementById("box10")
+  const box11 = document.getElementById("box11")
   if (box1.getContext) {
     const ctx = box1.getContext("2d");
 
@@ -453,5 +456,115 @@ function draw() {
       ctx.stroke();
     }
   }
+  if (box9.getContext) {
+    const ctx = box9.getContext("2d");
+    let offset = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, box9.width, box9.height);
+      ctx.setLineDash([4, 2]);
+      ctx.lineDashOffset = -offset;
+
+      // Draw the rectangle
+      ctx.strokeRect(10, 10, 300, 300);
+
+      // Draw the "X"
+      ctx.beginPath();
+      ctx.moveTo(10, 10);
+      ctx.lineTo(310, 310);
+      ctx.moveTo(310, 10);
+      ctx.lineTo(10, 310);
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    function march() {
+      offset++;
+      if (offset > 5) {
+        offset = 0;
+      }
+      draw();
+      setTimeout(march, 20);
+    }
+
+    march();
+  }
+  if (box10.getContext) {
+    const ctx = box10.getContext("2d");
+    const sun = new Image();
+    const moon = new Image();
+    const earth = new Image();
+  
+    function init() {
+      sun.src = "images/sun.png";
+      moon.src = "images/moon.png";
+      earth.src = "images/earth.png";
+      window.requestAnimationFrame(draw);
+    }
+  
+    function draw() {
+      
+      // Draw starry background
+      ctx.fillStyle = "rgb(0, 0, 0)"; // Dark background
+      ctx.fillRect(0, 0, 320, 320); // Fill the canvas with the dark background
+      
+      // Draw stars
+      ctx.fillStyle = "white";
+      for (let i = 0; i < 5; i++) {
+        const x = Math.random() * 300; // Random x coordinate
+        const y = Math.random() * 300; // Random y coordinate
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5, 0, Math.PI * 2); // Draw a small circle for each star
+        ctx.fill();
+      }
+  
+      ctx.fillStyle = "rgb(0 0 0 / 40%)";
+      ctx.strokeStyle = "rgb(0 153 255 / 40%)";
+      ctx.save();
+      ctx.translate(150, 150);
+  
+      // Earth
+      const time = new Date();
+      ctx.rotate(
+        ((2 * Math.PI) / 60) * time.getSeconds() +
+        ((2 * Math.PI) / 60000) * time.getMilliseconds(),
+      );
+      ctx.translate(105, 0);
+      ctx.drawImage(earth, -12, -12, 35, 35); // Resize earth image
+  
+      // Moon
+      ctx.save();
+      ctx.rotate(
+        ((2 * Math.PI) / 6) * time.getSeconds() +
+        ((2 * Math.PI) / 6000) * time.getMilliseconds(),
+      );
+      ctx.translate(0, 28.5);
+      ctx.drawImage(moon, -3.5, -3.5, 15, 15); // Resize moon image
+      ctx.restore();
+  
+      ctx.restore();
+  
+      ctx.beginPath();
+      ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.7)"; // Semi-transparent white
+      ctx.lineWidth = 2; // Increase line width
+      ctx.stroke();
+  
+      ctx.drawImage(sun, 120, 120, 60, 60); // Resize sun image      
+      window.requestAnimationFrame(draw);
+    }
+  
+    init();
+  }
+  if (box11.getContext) {
+    const ctx = box11.getContext("2d");
+
+    ctx.beginPath();
+    ctx.moveTo(75, 50);
+    ctx.lineTo(100, 75);
+    ctx.stroke();
+
+  }
 }
+  
 draw();
